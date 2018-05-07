@@ -5,4 +5,5 @@ close all
 file=fopen('test.txt');
 text_cell=textscan(file,'%c');
 text=text_cell{1};
-text=dec2bin(text);
+text=reshape(dec2bin(text)',[],1);
+
