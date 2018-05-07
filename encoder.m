@@ -5,5 +5,7 @@ close all
 file=fopen('test.txt');
 text_cell=textscan(file,'%c');
 text=text_cell{1};
-text=reshape(dec2bin(text)',[],1);
+binary_seq=str2num(reshape(dec2bin(text)',[],1));
+
+codewords=mapping(binary_seq);
 
