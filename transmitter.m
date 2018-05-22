@@ -13,9 +13,13 @@ binary_seq = str2num(reshape(binary_array',[],1));
 codewords = mapping(binary_seq);
 
 rolloff = 0.25;
-span = 600;
+span = 300;
 sps = 40;
 wave = waveformer(codewords, rolloff, span, sps);
 
-sound(wave, sps*span);
+fs = 2*span*sps;
+sound(wave, fs);
+
+
+
 
