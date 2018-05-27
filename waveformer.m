@@ -11,19 +11,12 @@ tend = find(B>threshold, 1,'last');
 B_trunc = B(tstart:tend);
 
 f1 = 1500; % Hz
-harm1 = exp(1i*2*pi*f1*(t(1:length(B_trunc))-t(ceil(length(B_trunc)/2))));
-
 f2 = 2500; % Hz
-harm2 = exp(1i*2*pi*f2*(t(1:length(B_trunc))-t(ceil(length(B_trunc)/2))));
+T=500;
 
-A = sqrt(2)*real(codeword*(harm1+harm2));
-
-wave_temp = A.*B_trunc;
-wave_temp = wave_temp';
-wave = wave_temp(:);
-
-txsignal_compl=convolve(upsample(codeword,500),B_trunc.');
-wave=real(txsignal_compl).*cos(2*pi*1500*t(1:length(txsignal_compl)))'-imag(txsignal_compl).*sin(2*pi*1500*t(1:length(txsignal_compl)))';
+signal=convolve(upsample(codeword,T),B_trunc.');
+wave=real(signal).*cos(2*pi*f1*t(1:length(signal)))'-imag(signal).*sin(2*pi*f1*t(1:length(signal)))';
+wave=wave+real(signal).*cos(2*pi*f2*t(1:length(signal)))'-imag(signal).*sin(2*pi*f2*t(1:length(signal)))';
 
 end
 

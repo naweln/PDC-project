@@ -12,5 +12,5 @@ function [after] = lowpass(before,f_c,f_s)
 % it might need tweaking.
 %
 
-h_lp=design(fdesign.lowpass('N,Fc',30,f_c,f_s),'all','MinPhase',true);
+h_lp=design(fdesign.lowpass('N,Fc',50,f_c,f_s),'all','MinPhase',true);
 after = filter(h_lp,before);
