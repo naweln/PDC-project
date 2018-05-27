@@ -1,5 +1,4 @@
-function wave = transmitter(rolloff,span,sps,threshold)
-
+function wave = transmitter(rolloff, span, sps, threshold)
 % Read file and convert to binary ASCII
 file = fopen('test.txt');
 text_cell = textscan(file,'%c');
