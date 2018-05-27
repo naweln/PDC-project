@@ -31,28 +31,27 @@ fs = 2*span*sps;
 t = 0:1/fs:1;
 tstart = find(B>1e-3,1,'first');
 tend = find(B>1e-3,1,'last');
-B_trunc = B(tstart:tend);
+B_trunc = B(tstart:tend+~mod(tend-tstart,2));
 
 f1=filters(800,2200,fs,'bandpass');
-%y1=filter(f1,y);
-y1=y'.*exp(-2*pi*j*1500.*t(1:16584));
-rx=2*lowpass(y1,1500,fs);
+y1=filter(f1,y);
+y1=y1.'.*exp(-2*pi*j*1500.*t(tstart:32*length(B_trunc)));
 
 f2=filters(1800,3200,fs,'bandpass');
 y2=filter(f2,y);
-y2=y2.'.*exp(-2*pi*j*2500.*t(1:16584));
+y2=y2.'.*exp(-2*pi*j*2500.*t(1:32*length(B_trunc)));
 
-plot(abs(fft(rx)))
+plot(abs(fft(y1)))
 figure
 plot(abs(fft(y2)))
 
 
-y_matched1=convolve(rx.',B_trunc.');
+y_matched1=convolve(y1.',B_trunc.');
 y_matched2=convolve(y2.',B_trunc.');
 
 
 T=tend-tstart+2;
-a=dec2bin(demapping(y_matched1(500:500:500+500*31)));
+a=dec2bin(demapping(y_matched1(293:T:293+T*31)));
 
 %a=demapping(y1(1:T:end));
 
