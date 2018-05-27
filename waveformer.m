@@ -3,10 +3,14 @@ function wave = waveformer(codeword, rolloff, span, sps, threshold)
 %   Detailed explanation goes here
 
 B = rcosdesign(rolloff, span, sps);
-fs = 2*span*sps;
+fs = span*sps;
 t = 0:1/fs:1;
-tstart = find(B>threshold, 1,'first');
-tend = find(B>threshold, 1,'last');
+if(threshold)
+    tstart = find(B>threshold, 1,'first');
+    tend = find(B>threshold, 1,'last');
+else
+    tstart = 1; tend = length(t);
+end
 B_trunc = B(tstart:tend);
 
 f1 = 1500; % Hz

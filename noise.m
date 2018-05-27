@@ -1,8 +1,8 @@
-function noise(fs)
+function n = noise(fs)
 
 x = randn(1e7,1);
 %coin = randi(2,1);
-coin = 1; % always choose 2000-3000 band
+coin = 1; % always choose 2000-3000 band TODO change at the end
 
 if mod(coin,2)
     filt = filters(2000,3000,fs,'bandstop');

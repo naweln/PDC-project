@@ -1,4 +1,4 @@
-function transmitter(rolloff, span, sps, threshold)
+function wave = transmitter(rolloff, span, sps, threshold)
 % Read file and convert to binary ASCII
 file = fopen('test.txt');
 text_cell = textscan(file,'%c');
@@ -10,12 +10,11 @@ end
 binary_seq = str2num(reshape(binary_array',[],1));
 codewords = mapping(binary_seq);
 
-
-codewords = [1;1i];
+%codewords = [1]; %TODO not real codewords
 wave = waveformer(codewords, rolloff, span, sps, threshold);
 
-fs = 2*span*sps;
-%sound(wave, fs);
+fs = span*sps;
+sound(wave, fs);
 audiowrite('pdc.wav',wave,fs)
 
 
