@@ -1,23 +1,21 @@
-function wave = waveformer(codeword, rolloff, span, sps)
+function wave = waveformer(codeword, rolloff, span, sps, threshold)
 %WAVEFORMER Summary of this function goes here
 %   Detailed explanation goes here
 
 B = rcosdesign(rolloff, span, sps);
 fs = 2*span*sps;
 t = 0:1/fs:1;
-tstart = find(B>1e-3,1,'first');
-tend = find(B>1e-3,1,'last');
-B_trunc = B(tstart:tend+~mod(tend-tstart,2));
+tstart = find(B>threshold, 1,'first');
+tend = find(B>threshold, 1,'last');
+B_trunc = B(tstart:tend);
 
 f1 = 1500; % Hz
-x1 = cos(2*pi*f1*(t(1:length(B_trunc))-t(floor(length(B_trunc)/2))));
-y1 = sin(2*pi*f1*(t(1:length(B_trunc))-t(floor(length(B_trunc)/2))));
+harm1 = exp(1i*2*pi*f1*(t(1:length(B_trunc))-t(ceil(length(B_trunc)/2))));
 
 f2 = 2500; % Hz
-x2 = cos(2*pi*f2*(t(1:length(B_trunc))-t(floor(length(B_trunc)/2))));
-y2 = sin(2*pi*f2*(t(1:length(B_trunc))-t(floor(length(B_trunc)/2))));
+harm2 = exp(1i*2*pi*f2*(t(1:length(B_trunc))-t(ceil(length(B_trunc)/2))));
 
-A = (real(codeword)*(x1+x2) - imag(codeword)*(y1+y2));
+A = sqrt(2)*real(codeword*(harm1+harm2));
 
 wave_temp = A.*B_trunc;
 wave_temp = wave_temp';
