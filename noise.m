@@ -1,4 +1,4 @@
-function noise(fs)
+function n = noise(fs)
 
 x = randn(1e7,1);
 %coin = randi(2,1);
