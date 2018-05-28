@@ -17,8 +17,12 @@ end
 f1 = 1500; % Hz
 f2 = 2500; % Hz
 
-signal = conv(upsample(codeword,length(B_trunc)),B_trunc.'); % faster (todo
-%signal= convolve(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by B_trunc eliminates ISI
+
+% ----- NEW -----
+symbols_preamble=map_bpsk(lfsr_framesync(100));
+codeword=cat(1,symbols_preamble',codeword);
+
+signal= convolve(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by B_trunc eliminates ISI
 harm1 = exp(-2*pi*1i*f1*t(1:length(signal)));
 harm2 = exp(-2*pi*1i*f2*t(1:length(signal)));
 
