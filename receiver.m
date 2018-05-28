@@ -34,7 +34,7 @@ else
     fc = 2500;
 end
 
-t = 0:1/fs:10000;
+t = 0:1/fs:100; % really slow todo
 y_base = sqrt(2)*y.*exp(-2*pi*1i*fc.*t(1:length(y))).';
 
 y_matched=convolve(y_base,B_trunc.');

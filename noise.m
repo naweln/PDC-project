@@ -1,8 +1,7 @@
 function n = noise(fs)
 
 x = randn(1e7,1);
-%coin = randi(2,1);
-coin = 1; % always choose 2000-3000 band TODO change at the end
+coin = randi(2,1);
 
 if mod(coin,2)
     filt = filters(2000,3000,fs,'bandstop');
@@ -11,6 +10,8 @@ else
 end
 
 n = filter(filt, x);
+sound(n, fs);
+
 
 % check if filtered correctly
 % rn = xcorr(n,'biased');

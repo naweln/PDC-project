@@ -6,7 +6,7 @@ threshold = 1e-3;
 
 B = rcosdesign(rolloff, span, sps);
 fs = 2*span*sps;
-t = 0:1/fs:100;
+t = 0:1/fs:100; % todo too slow
 if threshold>0
     tstart = find(B>threshold,1,'first');
     tend = find(B>threshold,1,'last');
