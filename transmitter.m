@@ -12,8 +12,9 @@ codewords = mapping(binary_seq);
 
 wave = waveformer(codewords, rolloff, span, sps, threshold);
 
+
 fs = 2*span*sps;
-sound(wave, fs);
+%sound(wave, fs);
 
 
 
