@@ -1,22 +1,12 @@
-function wave = waveformer(codeword, rolloff, span, sps, threshold)
+function wave = waveformer(codeword, B_trunc, fs, sync_len)
 %WAVEFORMER Summary of this function goes here
 %   Detailed explanation goes here
-
-B = rcosdesign(rolloff, span, sps);
-fs = 2*span*sps;
-if threshold
-    tstart = find(B>threshold, 1,'first');
-    tend = find(B>threshold, 1,'last');
-    B_trunc = B(tstart:tend);
-else
-    B_trunc = B;
-end
 
 f1 = 1500; % Hz
 f2 = 2500; % Hz
 
 % preamble for synchronization
-symbols_preamble=mapping(lfsr_framesync(100), 'BPSK');
+symbols_preamble=mapping(lfsr_framesync(sync_len), 'BPSK');
 codeword=cat(1,symbols_preamble,codeword);
 
 signal= conv(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by length(B_trunc) eliminates ISI (I think)

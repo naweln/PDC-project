@@ -1,4 +1,4 @@
-function wave = transmitter(rolloff, span, sps, threshold)
+function wave = transmitter(B_trunc, fs, sync_len)
 % Read file and convert to binary ASCII
 file = fopen('test.txt');
 text_cell = textscan(file,'%c');
@@ -10,9 +10,8 @@ end
 binary_seq = str2num(reshape(binary_array',[],1));
 codewords = mapping(binary_seq, 'QAM');
 
-wave = waveformer(codewords, rolloff, span, sps, threshold);
+wave = waveformer(codewords, B_trunc, fs, sync_len);
 
-fs = 2*span*sps;
 sound([zeros(70000,1); wave], fs);
 %sound(wave, fs);
 

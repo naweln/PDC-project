@@ -1,14 +1,8 @@
-function decoded = receiver(rolloff,span,sps,threshold,fs)
+function decoded = receiver(B_trunc, fs_trans, sync_len)
 
-fs_trans = 2*span*sps;
-B = rcosdesign(rolloff, span, sps);
-if threshold>0
-    tstart = find(B>threshold,1,'first');
-    tend = find(B>threshold,1,'last');
-    B_trunc = B(tstart:tend);
-else
-    B_trunc = B;
-end
+% sampling frequency at receiver
+fs = 48000;
+
 T = ceil(length(B_trunc)*fs/fs_trans);
 
 % recording
@@ -38,7 +32,7 @@ y_base = sqrt(2)*y.*exp(-2*pi*1i*fc.*t).';
 y_matched=conv(y_base,B_trunc.');
 
 % synchronization
-[frame_start_id,theta_init]=frame_sync(y_matched, T);
+[frame_start_id,theta_init]=frame_sync(y_matched, T, sync_len);
 frame_start_id = frame_start_id - T;
 sample_points  = frame_start_id + T:T:frame_start_id+T*nb_codewords;
 

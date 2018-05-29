@@ -1,5 +1,5 @@
 
-function [beginning_of_data,theta] = frame_sync(rx_signal, L)
+function [beginning_of_data,theta] = frame_sync(rx_signal, L, frame_sync_length)
 % Frame synchronizer.
 % rx_signal is the noisy received signal, and L is the oversampling factor (L=1 in chapter 2, L=4 in all later chapters).
 % The returned value is the index of the first data symbol in rx_signal.
@@ -9,7 +9,6 @@ function [beginning_of_data,theta] = frame_sync(rx_signal, L)
 % end
 
 detection_threshold = 15;
-frame_sync_length = 100;
 
 % Calculate the frame synchronization sequence and map it to BPSK: 0 -> +1, 1 -> -1
 frame_sync_sequence = 1 - 2*lfsr_framesync(frame_sync_length);

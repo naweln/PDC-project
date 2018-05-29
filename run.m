@@ -5,14 +5,26 @@ span = 300;
 sps = 40;
 threshold = 1e-3;
 
-fs = 48000;
+%root raised cosine
+B = rcosdesign(rolloff, span, sps);
+fs_trans = 2*span*sps;
+if threshold
+    tstart = find(B>threshold, 1,'first');
+    tend = find(B>threshold, 1,'last');
+    B_trunc = B(tstart:tend);
+else
+    B_trunc = B;
+end
+
+% length of synchronization sequence
+sync_len = 50;
 
 if(strcmp(mode,'transmit') | strcmp(mode,'t'))
-    transmitter(rolloff, span, sps, threshold);
+    transmitter(B_trunc, fs_trans, sync_len);
 elseif(strcmp(mode,'recieve') | strcmp(mode,'r'))
-    decode = receiver(rolloff, span, sps, threshold, fs);
+    decode = receiver(B_trunc, fs_trans, sync_len);
 elseif(strcmp(mode,'noise') | strcmp(mode,'n'))
-    noise(fs);
+    noise(10000);
 end
 
     
