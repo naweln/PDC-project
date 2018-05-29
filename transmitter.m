@@ -8,13 +8,12 @@ if(size(binary_array,2) == 7)
     binary_array = strcat('0',binary_array);
 end
 binary_seq = str2num(reshape(binary_array',[],1));
-codewords = mapping(binary_seq);
+codewords = mapping(binary_seq, 'QAM');
 
 wave = waveformer(codewords, rolloff, span, sps, threshold);
 
-
 fs = 2*span*sps;
-sound([zeros(700000,1); wave], fs);
+sound([zeros(70000,1); wave], fs);
 %sound(wave, fs);
 
 

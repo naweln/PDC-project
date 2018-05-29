@@ -4,7 +4,6 @@ function wave = waveformer(codeword, rolloff, span, sps, threshold)
 
 B = rcosdesign(rolloff, span, sps);
 fs = 2*span*sps;
-t = 0:1/fs:100; % todo too slow
 if threshold
     tstart = find(B>threshold, 1,'first');
     tend = find(B>threshold, 1,'last');
@@ -13,18 +12,17 @@ else
     B_trunc = B;
 end
 
-
 f1 = 1500; % Hz
 f2 = 2500; % Hz
 
+% preamble for synchronization
+symbols_preamble=mapping(lfsr_framesync(100), 'BPSK');
+codeword=cat(1,symbols_preamble,codeword);
 
-% ----- NEW -----
-symbols_preamble=map_bpsk(lfsr_framesync(100));
-codeword=cat(1,symbols_preamble',codeword);
-
-signal= convolve(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by B_trunc eliminates ISI
-harm1 = exp(-2*pi*1i*f1*t(1:length(signal)));
-harm2 = exp(-2*pi*1i*f2*t(1:length(signal)));
+signal= conv(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by length(B_trunc) eliminates ISI (I think)
+t = linspace(0,(length(signal)-1)/fs,length(signal));
+harm1 = exp(-2*pi*1i*f1*t);
+harm2 = exp(-2*pi*1i*f2*t);
 
 wave = sqrt(2)*real(signal.*(harm1+harm2)');
 
