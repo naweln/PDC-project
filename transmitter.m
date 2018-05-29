@@ -1,9 +1,13 @@
 function wave = transmitter(B_trunc, fs, sync_len)
 % Read file and convert to binary ASCII
 file = fopen('test.txt');
-text_cell = textscan(file,'%c');
+text_cell = textscan(file,'%s', 'Delimiter', '\n');
 text = text_cell{1};
-binary_array = dec2bin(text);
+message = [];
+for i=1:length(text)
+    message = [message text{i}];
+end
+binary_array = dec2bin(message);
 if(size(binary_array,2) == 7)
     binary_array = strcat('0',binary_array);
 end

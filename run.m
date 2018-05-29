@@ -3,7 +3,7 @@ function decode = run(mode)
 rolloff = 0.25;
 span = 300;
 sps = 40;
-threshold = 1e-3;
+threshold = 1e-2;
 
 %root raised cosine
 B = rcosdesign(rolloff, span, sps);
@@ -24,7 +24,7 @@ if(strcmp(mode,'transmit') | strcmp(mode,'t'))
 elseif(strcmp(mode,'recieve') | strcmp(mode,'r'))
     decode = receiver(B_trunc, fs_trans, sync_len);
 elseif(strcmp(mode,'noise') | strcmp(mode,'n'))
-    noise(10000);
+    noise(50000);
 end
 
     

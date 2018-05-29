@@ -7,7 +7,8 @@ f2 = 2500; % Hz
 
 % preamble for synchronization
 symbols_preamble=mapping(lfsr_framesync(sync_len), 'BPSK');
-codeword=cat(1,symbols_preamble,codeword);
+end_of_transmission=mapping([0 0 0 0 0 1 0 0]','QAM');
+codeword = [symbols_preamble; codeword; end_of_transmission];
 
 signal= conv(upsample(codeword,length(B_trunc)),B_trunc.'); % upsampling by length(B_trunc) eliminates ISI (I think)
 t = linspace(0,(length(signal)-1)/fs,length(signal));
