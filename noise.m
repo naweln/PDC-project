@@ -2,6 +2,7 @@ function n = noise(fs)
 
 x = randn(1e7,1);
 coin = randi(2,1);
+fprintf('coin toss is %d\n', coin)
 
 if mod(coin,2)
     filt = filters(2000,3000,fs,'bandstop');

@@ -1,11 +1,11 @@
 function decode = run(mode)
 
 rolloff = 0.25;
-span = 400;
-sps = 100;
+span = 300;
+sps = 40;
 threshold = 1e-3;
 
-fs = 2*span*sps;
+fs = 48000;
 
 if(strcmp(mode,'transmit') | strcmp(mode,'t'))
     transmitter(rolloff, span, sps, threshold);
