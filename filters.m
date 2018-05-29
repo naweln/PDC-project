@@ -11,8 +11,9 @@ b = 2*f2/fs;
 
 if(strcmp(type,'bandstop'))
     filter = bandstop(a,b);
-elseif(strcmp(type,'bandpass'))
-    filter = bandpass(a,b);
+elseif(strcmp(type,'lowpass'))
+    c = 2*(0.9*f2)/fs;
+    filter = lowpass(c,b);
 end
 return
 
@@ -24,12 +25,7 @@ d = fdesign.bandstop(f1,f1+width,f2-width,f2,0.1,60,0.1);
 filter = design(d, 'butter');
 return
 
-function filter = bandpass(f1, f2)
-% This function returns linear phase (FIR) bandpass filter which 
-% only lets frequencies between f1 and f2 through.
-
-% REALLY SLOW AS IT IS TODO
-width = (f2-f1)/5;
-d = fdesign.bandpass(f1,f1+width,f2-width,f2,100,0.1,100);
+function filter = lowpass(fpass, fstop)
+d = fdesign.lowpass('N,Fp,Fst',120,fpass, fstop);
 filter = design(d);
 return
