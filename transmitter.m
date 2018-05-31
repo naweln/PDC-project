@@ -7,7 +7,7 @@ message = [];
 for i=1:length(text)
     message = [message text{i} ' '];
 end
-
+message = message(1:end-1);
 % coding
 binary_array = dec2bin(coding(uint8(message), n));
 
@@ -20,8 +20,8 @@ codewords = mapping(binary_seq, 'QAM');
 
 wave = waveformer(codewords, B_trunc, fs, sync_len);
 
-%sound([zeros(70000,1); wave], fs);
-sound(wave, fs);
+sound([zeros(70000,1); wave], fs);
+%sound(wave, fs);
 audiowrite('pdc.wav',wave,fs);
 
 

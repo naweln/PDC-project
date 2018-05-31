@@ -13,7 +13,7 @@ y = getaudiodata(recorder);
 % detecting frequency band
 Yf = abs(fft(y));
 f = linspace(0,fs,length(y));
-if max(Yf(f>2200 & f<2800)>max(Yf(f>1200 & f<1800)))
+if mean(Yf(f>2050 & f<2100))>mean(Yf(f>1050 & f<1100))
     fc = 1500;
 else
     fc = 2500;
@@ -40,7 +40,14 @@ angle1 = angle(sync_code(1:sync_len/2));
 angle2 = angle(sync_code(sync_len/2+1:end));
 angle_diff = mod(angle2-angle1 - (sync_bin(1:sync_len/2)-sync_bin(sync_len/2+1:end))*pi,2*pi);
 angle_diff(angle_diff>pi) = angle_diff(angle_diff>pi)-2*pi;
-theta = 2*mean(angle_diff)/sync_len;
+theta1 = 2*mean(angle_diff)/sync_len;
+shift = 20;
+angle1 = angle(sync_code(1:sync_len/2));
+angle2 = angle(sync_code(shift+1:shift+sync_len/2));
+angle_diff = mod(angle2-angle1 - (sync_bin(1:sync_len/2)-sync_bin(shift+1:shift+sync_len/2))*pi,2*pi);
+angle_diff(angle_diff>pi) = angle_diff(angle_diff>pi)-2*pi;
+theta2 = 2*mean(angle_diff)/shift;
+theta = mean([theta1 theta2]);
 
 sync_codewords_time = sync_code_theta_init.*exp(1i*(0:length(sync_code)-1)*theta)';
 angle_avg0 = mean(angle(sync_codewords_time(angle(sync_codewords_time)<pi/2 & angle(sync_codewords_time)>-pi/2)));
@@ -65,9 +72,9 @@ decoded = decoding(bin2dec(demapped)',n);
 % finding end sequence 0 0 0 0 0 1 0 0 = 4 in int
 index = find(decoded == 4, 1, 'first');
 if(index)
-    message=char(decoded(1:index-1))';
+    message=char(decoded(1:index-1));
 else
-    message=char(decoded)';
+    message=char(decoded);
 end
 
 
