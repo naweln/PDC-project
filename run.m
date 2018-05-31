@@ -3,7 +3,7 @@ function decode = run(mode)
 rolloff = 0.25;
 span = 300;
 sps = 40;
-threshold = 1e-2;
+threshold = 1e-3;
 
 %root raised cosine
 B = rcosdesign(rolloff, span, sps);
@@ -17,12 +17,15 @@ else
 end
 
 % length of synchronization sequence
-sync_len = 50;
+sync_len = 100;
+
+% reed solomon "rate (?)"
+n = 2;
 
 if(strcmp(mode,'transmit') | strcmp(mode,'t'))
-    transmitter(B_trunc, fs_trans, sync_len);
+    transmitter(B_trunc, fs_trans, sync_len, n);
 elseif(strcmp(mode,'recieve') | strcmp(mode,'r'))
-    decode = receiver(B_trunc, fs_trans, sync_len);
+    decode = receiver(B_trunc, fs_trans, sync_len, n);
 elseif(strcmp(mode,'noise') | strcmp(mode,'n'))
     noise(50000);
 end
