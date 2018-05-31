@@ -17,7 +17,7 @@ else
 end
 
 % length of synchronization sequence
-sync_len = 100;
+sync_len = 200;
 
 % reed solomon "rate (?)"
 n = 2;

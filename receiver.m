@@ -7,7 +7,7 @@ T = ceil(length(B_trunc)*fs/fs_trans);
 
 % recording
 recorder = audiorecorder(fs,16,1);
-recordblocking(recorder, 25);
+recordblocking(recorder, 60);
 y = getaudiodata(recorder);
 
 % detecting frequency band
@@ -65,9 +65,9 @@ decoded = decoding(bin2dec(demapped)',n);
 % finding end sequence 0 0 0 0 0 1 0 0 = 4 in int
 index = find(decoded == 4, 1, 'first');
 if(index)
-    message=char(decoded(1:index-1));
+    message=char(decoded(1:index-1))';
 else
-    message=char(decoded);
+    message=char(decoded)';
 end
 
 
