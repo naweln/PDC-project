@@ -61,6 +61,7 @@ code_theta_init = code*exp(-1i*theta_init);
 codewords_time = code_theta_init.*exp(1i*(sync_len:length(code_theta_init)+sync_len-1)*theta)';
 codewords = codewords_time.*exp(-1i*angle_avg);
 
+plot(codewords, 'o');
 
 % demapping
 demapped_bin=dec2bin(demapping(codewords,'QAM'));
