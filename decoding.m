@@ -1,5 +1,5 @@
 function decomp = decoding(coded, n)
-    block_len = 2*floor(56/2);
+    block_len = 2*floor(64/2);
     nb_blocks = ceil(length(coded)/block_len);
     pad_len = block_len - mod(length(coded),block_len);
     pad = 4*ones(1,pad_len);

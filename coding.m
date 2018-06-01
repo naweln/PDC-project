@@ -1,7 +1,7 @@
 function code = coding(old_bytes, n)
 
 bytes = zlibencode(old_bytes);% compression doesn't work!!!! todo
-block_len = 2*floor(56/(2*n));% block length
+block_len = 2*floor(64/(2*n));% block length
 nb_blocks = ceil(length(bytes)/block_len);
 pad_len = block_len - mod(length(bytes),block_len);
 pad = 4*ones(1,pad_len);

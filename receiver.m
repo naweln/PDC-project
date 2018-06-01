@@ -7,7 +7,7 @@ T = ceil(length(B_trunc)*fs/fs_trans);
 
 % recording
 recorder = audiorecorder(fs,16,1);
-recordblocking(recorder, 60);
+recordblocking(recorder, 60); % change if over 200 characters!!
 y = getaudiodata(recorder);
 
 % detecting frequency band
