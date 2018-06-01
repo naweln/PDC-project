@@ -7,6 +7,7 @@ message = [];
 for i=1:length(text)
     message = [message text{i} ' '];
 end
+message = message(1:end-1);
 
 % coding
 binary_array = dec2bin(coding(uint8(message), n));
