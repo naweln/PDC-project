@@ -13,7 +13,7 @@ y = getaudiodata(recorder);
 % detecting frequency band
 Yf = abs(fft(y));
 f = linspace(0,fs,length(y));
-if mean(Yf(f>2050 & f<2400)>mean(Yf(f>1050 & f<1400))) % check if ok!!!!
+if mean(Yf(f>2050 & f<2400)>mean(Yf(f>1050  & f<1400))) % check if ok!!!!
     fc = 1500;
 else
     fc = 2500;
