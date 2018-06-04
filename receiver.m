@@ -10,10 +10,11 @@ recorder = audiorecorder(fs,16,1);
 recordblocking(recorder, 60); % change if over 200 characters!!
 y = getaudiodata(recorder);
 
+
 % detecting frequency band
 Yf = abs(fft(y));
 f = linspace(0,fs,length(y));
-if mean(Yf(f>2050 & f<2100))>mean(Yf(f>1050 & f<1100))
+if mean(Yf(f>2050 & f<2200))>mean(Yf(f>1050 & f<1200))
     fc = 1500;
 else
     fc = 2500;
@@ -40,14 +41,7 @@ angle1 = angle(sync_code(1:sync_len/2));
 angle2 = angle(sync_code(sync_len/2+1:end));
 angle_diff = mod(angle2-angle1 - (sync_bin(1:sync_len/2)-sync_bin(sync_len/2+1:end))*pi,2*pi);
 angle_diff(angle_diff>pi) = angle_diff(angle_diff>pi)-2*pi;
-theta1 = 2*mean(angle_diff)/sync_len;
-shift = 20;
-angle1 = angle(sync_code(1:sync_len/2));
-angle2 = angle(sync_code(shift+1:shift+sync_len/2));
-angle_diff = mod(angle2-angle1 - (sync_bin(1:sync_len/2)-sync_bin(shift+1:shift+sync_len/2))*pi,2*pi);
-angle_diff(angle_diff>pi) = angle_diff(angle_diff>pi)-2*pi;
-theta2 = 2*mean(angle_diff)/shift;
-theta = mean([theta1 theta2]);
+theta = 2*mean(angle_diff)/sync_len;
 
 sync_codewords_time = sync_code_theta_init.*exp(1i*(0:length(sync_code)-1)*theta)';
 angle_avg0 = mean(angle(sync_codewords_time(angle(sync_codewords_time)<pi/2 & angle(sync_codewords_time)>-pi/2)));
@@ -61,7 +55,13 @@ code_theta_init = code*exp(-1i*theta_init);
 codewords_time = code_theta_init.*exp(1i*(sync_len:length(code_theta_init)+sync_len-1)*theta)';
 codewords = codewords_time.*exp(-1i*angle_avg);
 
+figure; hold on;
+plot(sync_code,'o');
+plot(code, 'o');
+figure; hold on;
+plot(sync_codewords, 'o');
 plot(codewords, 'o');
+theta
 
 % demapping
 demapped_bin=dec2bin(demapping(codewords,'QAM'));

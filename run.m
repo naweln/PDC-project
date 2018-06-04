@@ -4,8 +4,8 @@ rolloff = 0.25;
 span = 300;
 sps = 40;
 threshold = 1e-3; % TRY 2e-3 !!!!
-% 1e-3 => 32 seconds
-% 2e-3 => 19 seconds
+% 1e-3 => 30 seconds
+% 2e-3 => 18 seconds
 
 %root raised cosine
 B = rcosdesign(rolloff, span, sps);
