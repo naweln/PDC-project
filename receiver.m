@@ -7,13 +7,15 @@ T = ceil(length(B_trunc)*fs/fs_trans);
 
 % recording
 recorder = audiorecorder(fs,16,1);
-recordblocking(recorder, 60);
+recordblocking(recorder, 60); % change if over 200 characters!!
 y = getaudiodata(recorder);
+
 
 % detecting frequency band
 Yf = abs(fft(y));
 f = linspace(0,fs,length(y));
-if mean(Yf(f>2050 & f<2400)>mean(Yf(f>1050  & f<1400))) % check if ok!!!!
+
+if mean(Yf(f>2050 & f<2200))>mean(Yf(f>1050 & f<1200))
     fc = 1500;
 else
     fc = 2500;
@@ -54,6 +56,13 @@ code_theta_init = code*exp(-1i*theta_init);
 codewords_time = code_theta_init.*exp(1i*(sync_len:length(code_theta_init)+sync_len-1)*theta)';
 codewords = codewords_time.*exp(-1i*angle_avg);
 
+figure; hold on;
+plot(sync_code,'o');
+plot(code, 'o');
+figure; hold on;
+plot(sync_codewords, 'o');
+plot(codewords, 'o');
+theta
 
 % demapping
 demapped_bin=dec2bin(demapping(codewords,'QAM'));
@@ -65,9 +74,9 @@ decoded = decoding(bin2dec(demapped)',n);
 % finding end sequence 0 0 0 0 0 1 0 0 = 4 in int
 index = find(decoded == 4, 1, 'first');
 if(index)
-    message=char(decoded(1:index-1))';
+    message=char(decoded(1:index-1));
 else
-    message=char(decoded)';
+    message=char(decoded);
 end
 
 

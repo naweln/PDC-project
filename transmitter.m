@@ -20,9 +20,10 @@ binary_seq = str2num(reshape(binary_array',[],1));
 codewords = mapping(binary_seq, 'QAM');
 
 wave = waveformer(codewords, B_trunc, fs, sync_len);
+time = length(wave)/fs
 
 %sound([zeros(70000,1); wave], fs);
-sound(wave, fs);
+%sound(wave, fs);
 audiowrite('pdc.wav',wave,fs);
 
 

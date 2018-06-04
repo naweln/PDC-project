@@ -1,7 +1,7 @@
 function n = noise(fs)
 
 x = randn(1e7,1);
-coin = randi(2,1);
+coin = 2;%randi(2,1);
 fprintf('coin toss is %d\n', coin)
 
 if mod(coin,2)
@@ -11,8 +11,8 @@ else
 end
 
 n = filter(filt, x);
-sound(n, fs);
-
+%sound(n, fs);
+audiowrite('noise2.wav',0.5*n,fs);
 
 % check if filtered correctly
 % rn = xcorr(n,'biased');

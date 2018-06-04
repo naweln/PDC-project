@@ -1,8 +1,8 @@
-function decoded = decoding(coded, n)
-    block_len = 2*floor(200/2);
+function decomp = decoding(coded, n)
+    block_len = 2*floor(64/2);
     nb_blocks = ceil(length(coded)/block_len);
     pad_len = block_len - mod(length(coded),block_len);
-    pad = 4*ones(1,pad_len);
+    pad = zeros(1,pad_len);
     coded_pad = [coded pad];
     
     for i=0:nb_blocks-1
@@ -11,5 +11,5 @@ function decoded = decoding(coded, n)
         decoded(:,i+1) = decode_gf.x;
     end
     decoded = decoded(:);
-    
+    decomp = zlibdecode(uint8(decoded(1:end-ceil(pad_len/2))));
 return
